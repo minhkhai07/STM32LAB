@@ -49,6 +49,31 @@
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
+void display7SEG(int num) {
+  uint8_t segmentPattern[] = {
+    0b00111111,
+    0b00000110,
+    0b01011011,
+    0b01001111,
+    0b01100110,
+    0b01101101,
+    0b01111101,
+    0b00000111,
+    0b01111111,
+    0b01101111 };
+  if (num < 0 || num > 9) {
+    num = 0;
+  }
+
+  uint8_t pattern = segmentPattern[num];
+  	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, (pattern & 0x01) ? GPIO_PIN_RESET : GPIO_PIN_SET); //A
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, (pattern & 0x02) ? GPIO_PIN_RESET : GPIO_PIN_SET); //B
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, (pattern & 0x04) ? GPIO_PIN_RESET : GPIO_PIN_SET); //C
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, (pattern & 0x08) ? GPIO_PIN_RESET : GPIO_PIN_SET); // D
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, (pattern & 0x10) ? GPIO_PIN_RESET : GPIO_PIN_SET); // E
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, (pattern & 0x20) ? GPIO_PIN_RESET : GPIO_PIN_SET); // F
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, (pattern & 0x40) ? GPIO_PIN_RESET : GPIO_PIN_SET); //G
+  }
 
 /* USER CODE END PFP */
 
@@ -91,51 +116,13 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  int time_counter = 0;
+  int counter = 0;
   while (1)
   {
     /* USER CODE END WHILE */
-	  if (time_counter < 5000) {
-	  	         HAL_GPIO_WritePin(GPIOA, LED_RED_Pin, GPIO_PIN_RESET);
-	  	         HAL_GPIO_WritePin(GPIOA, LED_YELLOW_Pin, GPIO_PIN_RESET);
-	  	         HAL_GPIO_WritePin(GPIOA, LED_GREEN_Pin, GPIO_PIN_SET);
-	  	         HAL_GPIO_WritePin(GPIOA, LED_REDA3_Pin, GPIO_PIN_SET);
-	  	         HAL_GPIO_WritePin(GPIOA, LED_YELLOWA4_Pin, GPIO_PIN_RESET);
-	  	         HAL_GPIO_WritePin(GPIOA, LED_GREENA5_Pin, GPIO_PIN_RESET);
-	  	  }
-
-	  	  else if (time_counter >= 5000 && time_counter < 7000) {
-	  		  	  HAL_GPIO_WritePin(GPIOA, LED_RED_Pin, GPIO_PIN_RESET);
-	  		 	  HAL_GPIO_WritePin(GPIOA, LED_YELLOW_Pin, GPIO_PIN_SET);
-	  		 	  HAL_GPIO_WritePin(GPIOA, LED_GREEN_Pin, GPIO_PIN_RESET);
-	  		 	  HAL_GPIO_WritePin(GPIOA, LED_REDA3_Pin, GPIO_PIN_SET);
-	  		 	  HAL_GPIO_WritePin(GPIOA, LED_YELLOWA4_Pin, GPIO_PIN_RESET);
-	  		 	  HAL_GPIO_WritePin(GPIOA, LED_GREENA5_Pin, GPIO_PIN_RESET);
-	  	  }
-
-	  	  else if (time_counter >= 7000 && time_counter < 10000) {
-	  	         HAL_GPIO_WritePin(GPIOA, LED_RED_Pin, GPIO_PIN_SET);
-	  	         HAL_GPIO_WritePin(GPIOA, LED_YELLOW_Pin, GPIO_PIN_RESET);
-	  	         HAL_GPIO_WritePin(GPIOA, LED_GREEN_Pin, GPIO_PIN_RESET);
-	  	         HAL_GPIO_WritePin(GPIOA, LED_REDA3_Pin, GPIO_PIN_RESET);
-	  	         HAL_GPIO_WritePin(GPIOA, LED_YELLOWA4_Pin, GPIO_PIN_RESET);
-	  	         HAL_GPIO_WritePin(GPIOA, LED_GREENA5_Pin, GPIO_PIN_SET);
-	  	  }
-
-	  	  else if (time_counter >= 10000 && time_counter < 12000) {
-	  		  HAL_GPIO_WritePin(GPIOA, LED_RED_Pin, GPIO_PIN_SET);
-	  		  HAL_GPIO_WritePin(GPIOA, LED_YELLOW_Pin, GPIO_PIN_RESET);
-	  		  HAL_GPIO_WritePin(GPIOA, LED_GREEN_Pin, GPIO_PIN_RESET);
-	  		  HAL_GPIO_WritePin(GPIOA, LED_REDA3_Pin, GPIO_PIN_RESET);
-	  		  HAL_GPIO_WritePin(GPIOA, LED_YELLOWA4_Pin, GPIO_PIN_SET);
-	  		  HAL_GPIO_WritePin(GPIOA, LED_GREENA5_Pin, GPIO_PIN_RESET);
-	  	  }
-	  	  	  	  time_counter += 100;
-	  	          if (time_counter >= 12000) {
-	  	              time_counter = 0;
-	  	          }
-	  	          HAL_Delay(100);
-
+	  if( counter >= 10) counter = 0;
+	  display7SEG ( counter ++) ;
+	  HAL_Delay (1000) ;
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -187,10 +174,15 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, LED_RED_Pin|LED_YELLOW_Pin|LED_GREEN_Pin|LED_REDA3_Pin
                           |LED_YELLOWA4_Pin|LED_GREENA5_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, LED_REDB0_Pin|LED_REDB1_Pin|LED_REDB2_Pin|LED_REDB3_Pin
+                          |LED_REDB4_Pin|LED_REDB5_Pin|LED_REDB6_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : LED_RED_Pin LED_YELLOW_Pin LED_GREEN_Pin LED_REDA3_Pin
                            LED_YELLOWA4_Pin LED_GREENA5_Pin */
@@ -200,6 +192,15 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : LED_REDB0_Pin LED_REDB1_Pin LED_REDB2_Pin LED_REDB3_Pin
+                           LED_REDB4_Pin LED_REDB5_Pin LED_REDB6_Pin */
+  GPIO_InitStruct.Pin = LED_REDB0_Pin|LED_REDB1_Pin|LED_REDB2_Pin|LED_REDB3_Pin
+                          |LED_REDB4_Pin|LED_REDB5_Pin|LED_REDB6_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 
