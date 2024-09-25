@@ -94,6 +94,21 @@ void setNumberOnClock(int num)
 	default: clearALLClock(); break;
 }
 }
+void clearNumberOnClock(int num)
+{
+	HAL_GPIO_WritePin (GPIOA , LED_RED_Pin ,GPIO_PIN_SET);
+	HAL_GPIO_WritePin (GPIOA , LED_REDA5_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA6_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA7_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA8_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA9_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA10_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA11_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA12_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA13_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA14_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA15_Pin ,GPIO_PIN_SET );
+}
 int main(void)
 {
   /* USER CODE BEGIN 1 */
