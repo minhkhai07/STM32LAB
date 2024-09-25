@@ -91,7 +91,7 @@ void setNumberOnClock(int num)
 	case 9: HAL_GPIO_WritePin (GPIOA , LED_REDA13_Pin ,GPIO_PIN_RESET ) ; break;
 	case 10:HAL_GPIO_WritePin (GPIOA , LED_REDA14_Pin ,GPIO_PIN_RESET ) ; break;
 	case 11:HAL_GPIO_WritePin (GPIOA , LED_REDA15_Pin ,GPIO_PIN_RESET ) ; break;
-	default: clearALLClock(); break;
+	default: clearAllClock(); break;
 }
 }
 void clearNumberOnClock(int num)
@@ -112,6 +112,12 @@ void clearNumberOnClock(int num)
 		default: break;
 		}
 
+}
+void updateClockDisplay(int hour, int minute, int second) {
+    clearAllClock();
+    setNumberOnClock(hour % 12);   // Giờ trên đồng hồ 12 giờ
+    setNumberOnClock(minute / 5);  // Chia phút cho 5 để phù hợp với 12 vị trí
+    setNumberOnClock(second / 5);  // Chia giây cho 5 để phù hợp với 12 vị trí
 }
 int main(void)
 {
@@ -143,9 +149,27 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int hour=0;
+  int minute=0;
+  int second=0;
   while (1)
   {
     /* USER CODE END WHILE */
+	  updateClockDisplay(hour,minute,second);
+	  HAL_Delay(10);
+	  	  	          // Increment the second
+	  	  	          second++;
+	  	  	          if (second >= 60) {
+	  	  	              second = 0;
+	  	  	              minute++;
+	  	  	              if (minute >= 60) {
+	  	  	                  minute = 0;
+	  	  	                  hour++;
+	  	  	                  if (hour > 12) {
+	  	  	                      hour = 1; // Reset hour to 1 after reaching 12
+	  	  	                  }
+	  	  	              }
+	  	  	          }
 
     /* USER CODE BEGIN 3 */
   }
