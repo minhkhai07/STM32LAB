@@ -47,6 +47,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -60,6 +61,40 @@ void SystemClock_Config(void);
   * @brief  The application entry point.
   * @retval int
   */
+void clear_leds(void){
+	HAL_GPIO_WritePin (GPIOA , LED_RED_Pin ,GPIO_PIN_SET);
+	HAL_GPIO_WritePin (GPIOA , LED_REDA5_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA6_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA7_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA8_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA9_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA10_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA11_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA12_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA13_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA14_Pin ,GPIO_PIN_SET );
+	HAL_GPIO_WritePin (GPIOA , LED_REDA15_Pin ,GPIO_PIN_SET );
+
+}
+void set_led(int h)
+{
+	switch(h){
+	case 1: HAL_GPIO_WritePin (GPIOA , LED_RED_Pin ,GPIO_PIN_RESET ) ; break;
+	case 2: HAL_GPIO_WritePin (GPIOA , LED_REDA5_Pin ,GPIO_PIN_RESET ) ; break;
+	case 3: HAL_GPIO_WritePin (GPIOA , LED_REDA6_Pin ,GPIO_PIN_RESET ) ; break;
+	case 4: HAL_GPIO_WritePin (GPIOA , LED_REDA7_Pin ,GPIO_PIN_RESET ) ; break;
+	case 5: HAL_GPIO_WritePin (GPIOA , LED_REDA8_Pin ,GPIO_PIN_RESET ) ; break;
+	case 6: HAL_GPIO_WritePin (GPIOA , LED_REDA9_Pin ,GPIO_PIN_RESET ) ; break;
+	case 7: HAL_GPIO_WritePin (GPIOA , LED_REDA10_Pin ,GPIO_PIN_RESET ) ; break;
+	case 8: HAL_GPIO_WritePin (GPIOA , LED_REDA11_Pin ,GPIO_PIN_RESET ) ; break;
+	case 9: HAL_GPIO_WritePin (GPIOA , LED_REDA12_Pin ,GPIO_PIN_RESET ) ; break;
+	case 10: HAL_GPIO_WritePin (GPIOA , LED_REDA13_Pin ,GPIO_PIN_RESET ) ; break;
+	case 11: HAL_GPIO_WritePin (GPIOA , LED_REDA14_Pin ,GPIO_PIN_RESET ) ; break;
+	case 12: HAL_GPIO_WritePin (GPIOA , LED_REDA15_Pin ,GPIO_PIN_RESET ) ; break;
+	default: clear_leds(); break;
+	}
+
+}
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -83,15 +118,25 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+  MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int sth=1;
   while (1)
   {
     /* USER CODE END WHILE */
+	  	clear_leds();
+	  	set_led(sth);
+	  	sth++;
+	  	HAL_Delay(1000);
+	  	if(sth>12)
+	  	{
+	  		sth=1;
+	  	}
 
     /* USER CODE BEGIN 3 */
   }
@@ -131,6 +176,36 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, LED_RED_Pin|LED_REDA5_Pin|LED_REDA6_Pin|LED_REDA7_Pin
+                          |LED_REDA8_Pin|LED_REDA9_Pin|LED_REDA10_Pin|LED_REDA11_Pin
+                          |LED_REDA12_Pin|LED_REDA13_Pin|LED_REDA14_Pin|LED_REDA15_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : LED_RED_Pin LED_REDA5_Pin LED_REDA6_Pin LED_REDA7_Pin
+                           LED_REDA8_Pin LED_REDA9_Pin LED_REDA10_Pin LED_REDA11_Pin
+                           LED_REDA12_Pin LED_REDA13_Pin LED_REDA14_Pin LED_REDA15_Pin */
+  GPIO_InitStruct.Pin = LED_RED_Pin|LED_REDA5_Pin|LED_REDA6_Pin|LED_REDA7_Pin
+                          |LED_REDA8_Pin|LED_REDA9_Pin|LED_REDA10_Pin|LED_REDA11_Pin
+                          |LED_REDA12_Pin|LED_REDA13_Pin|LED_REDA14_Pin|LED_REDA15_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 4 */
