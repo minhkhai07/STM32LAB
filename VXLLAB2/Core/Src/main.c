@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "Timer.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -43,7 +44,7 @@
 TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
-
+int flag1=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -56,6 +57,21 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+const uint8_t segmentPattern[] = {
+			0b00111111,
+		    0b00000110,
+		    0b01011011,
+		    0b01001111
+};
+void display7SEG(uint8_t pattern){
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, (pattern & 0x01) ? GPIO_PIN_RESET : GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, (pattern & 0x02) ? GPIO_PIN_RESET : GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, (pattern & 0x04) ? GPIO_PIN_RESET : GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, (pattern & 0x08) ? GPIO_PIN_RESET : GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, (pattern & 0x10) ? GPIO_PIN_RESET : GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, (pattern & 0x20) ? GPIO_PIN_RESET : GPIO_PIN_SET);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, (pattern & 0x40) ? GPIO_PIN_RESET : GPIO_PIN_SET);
+}
 
 /* USER CODE END 0 */
 
@@ -95,10 +111,47 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  setTimer(0,500);
+  setTimer(1,1000);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
   while (1)
   {
     /* USER CODE END WHILE */
+	  if (Timer_Flag[0] == 1) {
+	  	              Timer_Flag[0] = 0;
+	  	              HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
+	  	              HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);
+	  	              HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_SET);
+	  	              HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
 
+	  	              switch (flag1) {
+	  	                  case 0:
+	  	                      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
+	  	                      display7SEG(segmentPattern[1]);
+	  	                      break;
+	  	                  case 1:
+	  	                      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_RESET);
+	  	                      display7SEG(segmentPattern[2]);
+	  	                      break;
+	  	                  case 2:
+	  	               	  	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
+	  	               	  	  display7SEG(segmentPattern[3]);
+	  	               	  	  break;
+	  	               	  case 3:
+	  	               	  	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_RESET);
+	  	               	  	  display7SEG(segmentPattern[0]);
+	  	               	  	  break;
+	  	               	  	              }
+	  	              flag1=(flag1+1)%4;
+	  	              setTimer(0,500);
+
+  }
+	  if(Timer_Flag[1]==1)
+					  {
+						  Timer_Flag[1]=0;
+						  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
+						  setTimer(1,1000);
+					  }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
