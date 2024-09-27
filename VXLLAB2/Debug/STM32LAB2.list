@@ -341,35 +341,35 @@ int main(void)
  80002fa:	2b01      	cmp	r3, #1
  80002fc:	d00f      	beq.n	800031e <main+0x5e>
  80002fe:	e01d      	b.n	800033c <main+0x7c>
-	                  case 0: // Trường hợp 1: LED 1 hiển thị số 1, LED 2 hiển thị số 2
-	                      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET); // Kích hoạt LED 1
+	                  case 0:
+	                      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
  8000300:	2200      	movs	r2, #0
  8000302:	2140      	movs	r1, #64	; 0x40
  8000304:	4818      	ldr	r0, [pc, #96]	; (8000368 <main+0xa8>)
  8000306:	f000 fcb9 	bl	8000c7c <HAL_GPIO_WritePin>
-	                      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);   // Tắt LED 2
+	                      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_SET);
  800030a:	2201      	movs	r2, #1
  800030c:	2180      	movs	r1, #128	; 0x80
  800030e:	4816      	ldr	r0, [pc, #88]	; (8000368 <main+0xa8>)
  8000310:	f000 fcb4 	bl	8000c7c <HAL_GPIO_WritePin>
-	                      display7SEG(segmentPattern[0]); // Hiển thị số 1
+	                      display7SEG(segmentPattern[0]);
  8000314:	2306      	movs	r3, #6
  8000316:	4618      	mov	r0, r3
  8000318:	f7ff ff6c 	bl	80001f4 <display7SEG>
 	                      break;
  800031c:	e00e      	b.n	800033c <main+0x7c>
-	                  case 1: // Trường hợp 2: LED 1 hiển thị số 2, LED 2 hiển thị số 1
-	                      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);   // Tắt LED 1
+	                  case 1:
+	                      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET);
  800031e:	2201      	movs	r2, #1
  8000320:	2140      	movs	r1, #64	; 0x40
  8000322:	4811      	ldr	r0, [pc, #68]	; (8000368 <main+0xa8>)
  8000324:	f000 fcaa 	bl	8000c7c <HAL_GPIO_WritePin>
-	                      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_RESET); // Kích hoạt LED 2
+	                      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, GPIO_PIN_RESET);
  8000328:	2200      	movs	r2, #0
  800032a:	2180      	movs	r1, #128	; 0x80
  800032c:	480e      	ldr	r0, [pc, #56]	; (8000368 <main+0xa8>)
  800032e:	f000 fca5 	bl	8000c7c <HAL_GPIO_WritePin>
-	                      display7SEG(segmentPattern[1]); // Hiển thị số 2
+	                      display7SEG(segmentPattern[1]);
  8000332:	235b      	movs	r3, #91	; 0x5b
  8000334:	4618      	mov	r0, r3
  8000336:	f7ff ff5d 	bl	80001f4 <display7SEG>
@@ -377,7 +377,7 @@ int main(void)
  800033a:	bf00      	nop
 	              }
 
-	              displayflag = !displayflag; // Chuyển đổi giữa 0 và 1
+	              displayflag = !displayflag;
  800033c:	4b09      	ldr	r3, [pc, #36]	; (8000364 <main+0xa4>)
  800033e:	681b      	ldr	r3, [r3, #0]
  8000340:	2b00      	cmp	r3, #0
@@ -388,7 +388,7 @@ int main(void)
  800034a:	461a      	mov	r2, r3
  800034c:	4b05      	ldr	r3, [pc, #20]	; (8000364 <main+0xa4>)
  800034e:	601a      	str	r2, [r3, #0]
-	              setTimer(0, 500); // Đặt lại timer
+	              setTimer(0, 500);
  8000350:	f44f 71fa 	mov.w	r1, #500	; 0x1f4
  8000354:	2000      	movs	r0, #0
  8000356:	f7ff fef9 	bl	800014c <setTimer>
