@@ -20,7 +20,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "Timer.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -143,24 +142,9 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer(0, 500);
-  setTimer(1,1000);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
   while (1)
   {
-	  if(Timer_Flag[0]==1)
-	  {
-		  Timer_Flag[0]=0;
-		  update7SEG(index_led);
-	      index_led=(index_led+1)%MAX_LED;
-	      setTimer(0,500);
-	  }
-	  if(Timer_Flag[1]==1)
-	  {
-		  Timer_Flag[1]=0;
-		  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
-		  setTimer(1,1000);
-	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -224,7 +208,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 7999;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 9;
+  htim2.Init.Period = 999;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -292,7 +276,13 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback ( TIM_HandleTypeDef * htim )
 {
-	runTimer();
+	if (htim->Instance == TIM2)
+	    {
+	        update7SEG(index_led);
+	        index_led = (index_led + 1) % MAX_LED;
+	        HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
+	    }
+
 }
 /* USER CODE END 4 */
 
