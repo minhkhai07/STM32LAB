@@ -160,7 +160,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   setTimer(0,250);
   setTimer(1,1000);
-  setTimer(2,1000);
+  setTimer(2,250);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
 
     while (1)
@@ -194,7 +194,7 @@ int main(void)
     		        hour = 0;
     		    }
     		    updateClockBuffer();
-    		    setTimer(2,1000);
+    		    setTimer(2,250);
     }
 
     /* USER CODE BEGIN 3 */
