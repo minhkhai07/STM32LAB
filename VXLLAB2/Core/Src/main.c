@@ -158,7 +158,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer(0,1000);
+  setTimer(0,250);
   setTimer(1,1000);
   setTimer(2,1000);
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
