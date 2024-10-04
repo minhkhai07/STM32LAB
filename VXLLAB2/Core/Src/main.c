@@ -169,7 +169,7 @@ int main(void)
     if(Timer_Flag[0]){
     	update7SEG(index_led);
     	index_led=(index_led+1)%MAX_LED;
-    	setTimer(0,1000);
+    	setTimer(0,250);
     }
     if(Timer_Flag[1])
     {
